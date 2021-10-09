@@ -1,0 +1,41 @@
+{% extends 'boards/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Boards</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th>Board</th>
+      <th>Posts</th>
+      <th>Topics</th>
+      <th>Last Post</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for board in boards %}
+      <tr>
+        <td>
+          <a href="{% url 'boards:board_detail' board.name %}">{{ board.name }}</a>
+          
+          <small class="text-muted d-block">{{ board.description }}</small>
+        </td>
+        <td class="align-middle">{{ board.get_posts_count }}</td>
+        <td class="align-middle">{{ board.topics.count }}</td>
+        
+        {% if board.get_posts_count == 0 %}
+          <td class="align-middle">No posts yet</td>
+        {% else %}
+          <td class="align-middle">{{ board.get_last_post.created_at }}</td>
+        {% endif %}
+        
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
